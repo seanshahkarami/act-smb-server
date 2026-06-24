@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cat > smb.conf <<EOF
+sudo cat > smb.conf <<EOF
 [global]
    workgroup = WORKGROUP
    server string = XP Backup Server
@@ -42,4 +42,41 @@ EOF
 sudo mkdir -p $PWD/samba
 sudo mkdir -p $PWD/samba/private
 sudo chmod 700 $PWD/samba/private
+
 sudo /opt/homebrew/bin/smbpasswd -c $PWD/smb.conf -a $USER
+
+sudo rm com.act.smbd.plist
+sudo cat > com.act.smbd.plist <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+ "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.act.smbd</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/sbin/samba-dot-org-smbd</string>
+        <string>--foreground</string>
+        <string>--no-process-group</string>
+        <string>--configfile=$PWD/smb.conf</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>$PWD/samba/launchd.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>$PWD/samba/launchd.err.log</string>
+</dict>
+</plist>
+EOF
+
+sudo chown root:wheel com.act.smbd.plist
+sudo chmod 644 com.act.smbd.plist
