@@ -41,6 +41,8 @@ sudo cat > smb.conf <<EOF
    guest ok = no
    valid users = $USER
    force user = $USER
+   root preexec = /bin/test -e "${VOLUME}/.actbackup_volume"
+   root preexec close = yes
 EOF
 
 sudo mkdir -p $PWD/samba
