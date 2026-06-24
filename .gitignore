@@ -1,2 +1,3 @@
 samba/
 smb.conf
+*.plist
