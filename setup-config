@@ -45,7 +45,6 @@ sudo chmod 700 $PWD/samba/private
 
 sudo /opt/homebrew/bin/smbpasswd -c $PWD/smb.conf -a $USER
 
-sudo rm -f com.act.smbd.plist
 sudo cat > com.act.smbd.plist <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
@@ -78,5 +77,6 @@ sudo cat > com.act.smbd.plist <<EOF
 </plist>
 EOF
 
-sudo chown root:wheel com.act.smbd.plist
-sudo chmod 644 com.act.smbd.plist
+sudo cp com.act.smbd.plist /Library/LaunchDaemons/com.act.smbd.plist
+sudo chown root:wheel /Library/LaunchDaemons/com.act.smbd.plist
+sudo chmod 644 /Library/LaunchDaemons/com.act.smbd.plist

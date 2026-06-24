@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo launchctl bootstrap system $PWD/com.act.smbd.plist
+sudo launchctl bootstrap system /Library/LaunchDaemons/com.act.smbd.plist
