@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "launchctl status"
+sudo launchctl print system/com.act.smbd
+
+echo
+
+echo "listen status"
+sudo lsof -nP -iTCP:445 -sTCP:LISTEN
