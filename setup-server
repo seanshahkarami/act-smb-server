@@ -1,0 +1,45 @@
+#!/bin/bash
+
+cat > smb.conf <<EOF
+[global]
+   workgroup = WORKGROUP
+   server string = XP Backup Server
+   netbios name = MACSTUDIO
+
+   # --- all state kept project-local (survives brew upgrade) ---
+   private dir = $PWD/samba/private
+   state directory = $PWD/samba
+   cache directory = $PWD/samba
+   lock directory = $PWD/samba
+   pid directory = $PWD/samba
+   ncalrpc dir = $PWD/samba/ncalrpc
+   log file = $PWD/samba/log.%m
+
+   server min protocol = NT1
+   server max protocol = NT1
+   ntlm auth = yes
+   lanman auth = yes
+   client lanman auth = yes
+
+   server multi channel support = no
+
+   security = user
+   passdb backend = tdbsam
+
+   veto files = /._*/.DS_Store/.Spotlight-V100/.Trashes/
+   delete veto files = yes
+
+[actbackup]
+   path = /Volumes/ACT BACKUP
+   browseable = yes
+   read only = no
+   writable = yes
+   guest ok = no
+   valid users = $USER
+   force user = $USER
+EOF
+
+sudo mkdir -p $PWD/samba
+sudo mkdir -p $PWD/samba/private
+sudo chmod 700 $PWD/samba/private
+sudo /opt/homebrew/bin/smbpasswd -c $PWD/smb.conf -a $USER

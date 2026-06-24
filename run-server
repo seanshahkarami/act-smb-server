@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo /opt/homebrew/sbin/samba-dot-org-smbd \
+  --configfile=$PWD/smb.conf \
+  --foreground \
+  --no-process-group \
+  --debug-stdout \
+  --debuglevel=2
